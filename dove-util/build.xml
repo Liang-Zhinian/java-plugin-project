@@ -1,0 +1,19 @@
+<project name="dove-util" default="deploy" basedir="." xmlns:artifact="urn:maven-artifact-ant">
+	<property file="${user.home}/dove-dev.properties" />
+	<import file="${dove.devroot}/build/ant/build.xml" />
+
+	<target name="deploy" depends="init-all" description="Updates a deployed webapp">
+		<property environment="env" />
+		<property id="properties" file="build.properties" />
+
+		<echo message="Deploying ${pom.artifactId}" />
+
+		<exec executable="mvn.bat" resolveexecutable="true" searchpath="true">
+		  <arg line="-o -Dmaven.test.skip=true install"/>
+		</exec>
+		
+		<copy file="target/${pom.artifactId}-${pom.version}.${pom.packaging}" todir="${dove.webroot}/WEB-INF/lib"/>
+		
+		<echo message="${pom.artifactId} is deployed" />
+	</target>
+</project>
